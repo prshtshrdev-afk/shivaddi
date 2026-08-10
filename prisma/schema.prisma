@@ -1,0 +1,229 @@
+// SHIV AADI – Mithila Tiles & Marbles House
+// Prisma schema (Prisma ORM 7)
+
+generator client {
+  provider = "prisma-client"
+  output   = "../app/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum PriceType {
+  EXACT
+  FROM
+  ON_REQUEST
+}
+
+enum LeadStatus {
+  NEW
+  CONTACTED
+  QUALIFIED
+  CONVERTED
+  CLOSED
+}
+
+enum BusinessType {
+  BUILDER
+  CONTRACTOR
+  ARCHITECT
+  INTERIOR_DESIGNER
+  DEALER
+  RETAILER
+  REAL_ESTATE
+  HOTEL
+  OTHER
+}
+
+enum ProjectType {
+  RESIDENTIAL
+  COMMERCIAL
+  HOTEL
+  OFFICE
+  RETAIL
+  OTHER
+}
+
+model User {
+  id           String   @id @default(cuid())
+  name         String
+  email        String   @unique
+  passwordHash String
+  role         String   @default("admin")
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model Category {
+  id           String     @id @default(cuid())
+  name         String
+  slug         String     @unique
+  description  String?
+  image        String?
+  parentId     String?
+  parent       Category?  @relation("CategoryTree", fields: [parentId], references: [id], onDelete: SetNull)
+  children     Category[] @relation("CategoryTree")
+  displayOrder Int        @default(0)
+  published    Boolean    @default(true)
+  products     Product[]
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+
+  @@index([parentId])
+  @@index([slug])
+}
+
+model Product {
+  id              String         @id @default(cuid())
+  name            String
+  slug            String         @unique
+  sku             String?        @unique
+  categoryId      String?
+  category        Category?      @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+  subcategory     String?
+  description     String?
+  shortDescription String?
+  material        String?
+  size            String?
+  thickness       String?
+  finish          String?
+  colour          String?
+  application     String?
+  stockStatus     String         @default("In Stock")
+  price           Decimal?       @db.Decimal(12, 2)
+  priceType       PriceType      @default(ON_REQUEST)
+  moq             String?
+  featured        Boolean        @default(false)
+  isNew           Boolean        @default(false)
+  tags            String[]       @default([])
+  published       Boolean        @default(false)
+  seoTitle        String?
+  seoDescription  String?
+  images          ProductImage[]
+  leads           Lead[]         @relation("LeadProduct")
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+
+  @@index([categoryId])
+  @@index([published])
+  @@index([featured])
+}
+
+model ProductImage {
+  id          String  @id @default(cuid())
+  productId   String
+  product     Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  url         String
+  alt         String?
+  sortOrder   Int     @default(0)
+  isThumbnail Boolean @default(false)
+
+  @@index([productId])
+}
+
+model Lead {
+  id              String       @id @default(cuid())
+  name            String
+  company         String?
+  email           String
+  phone           String
+  city            String?
+  businessType    BusinessType
+  productId       String?
+  product         Product?     @relation("LeadProduct", fields: [productId], references: [id], onDelete: SetNull)
+  productName     String?
+  quantity        String?
+  message         String?
+  projectName     String?
+  projectLocation String?
+  expectedDate    String?
+  fileUrl         String?
+  consent         Boolean      @default(false)
+  status          LeadStatus   @default(NEW)
+  ip              String?
+  createdAt       DateTime     @default(now())
+  updatedAt       DateTime     @updatedAt
+
+  @@index([status])
+  @@index([createdAt])
+  @@index([productId])
+}
+
+model SiteSetting {
+  id    String @id @default(cuid())
+  key   String @unique
+  value String
+  group String @default("general")
+
+  @@index([group])
+}
+
+model PageContent {
+  id      String @id @default(cuid())
+  page    String
+  section String
+  key     String
+  content String @db.Text
+
+  @@unique([page, section, key])
+  @@index([page])
+}
+
+model BlogPost {
+  id              String   @id @default(cuid())
+  title           String
+  slug            String   @unique
+  excerpt         String?
+  content         String   @db.Text
+  featuredImage   String?
+  published       Boolean  @default(false)
+  publishedAt     DateTime?
+  seoTitle        String?
+  seoDescription  String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@index([published])
+}
+
+model Project {
+  id           String      @id @default(cuid())
+  name         String
+  slug         String      @unique
+  location     String?
+  type         ProjectType
+  description  String?     @db.Text
+  images       String[]    @default([])
+  productsUsed String[]    @default([])
+  published    Boolean     @default(false)
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
+
+  @@index([published])
+}
+
+model GalleryImage {
+  id        String   @id @default(cuid())
+  title     String?
+  url       String
+  category  String?
+  sortOrder Int      @default(0)
+  published Boolean  @default(true)
+  createdAt DateTime @default(now())
+
+  @@index([published])
+}
+
+model Testimonial {
+  id        String   @id @default(cuid())
+  clientName String
+  company   String?
+  content   String
+  rating    Int      @default(5)
+  published Boolean  @default(true)
+  sortOrder Int      @default(0)
+  createdAt DateTime @default(now())
+
+  @@index([published])
+}

@@ -1,0 +1,202 @@
+@import "tailwindcss";
+
+@theme {
+  /* ── SHIV AADI brand palette (Orientbell-inspired) ───── */
+  --color-gold: #fc0;
+  --color-gold-light: #ffe066;
+  --color-gold-dark: #e6b800;
+  --color-brand-green: #008d36;
+  --color-brand-green-bright: #0f9243;
+  --color-brand-green-soft: #e6f5ec;
+  --color-brand-yellow-soft: #fff8d6;
+  --color-charcoal: #0f0f0f;
+  --color-onyx: #1a1a1a;
+  --color-marble: #ffffff;
+  --color-beige: #fafafa;
+  --color-beige-dark: #f2f2f2;
+  --color-tilak: #d23c2f;
+  --color-ink: #1c1c1a;
+  --color-stone: #747474;
+
+  /* ── Typography ──────────────────────────────────────── */
+  --font-serif: var(--font-poppins), "Inter", system-ui, sans-serif;
+  --font-sans: var(--font-poppins), "Inter", system-ui, sans-serif;
+  --font-display: var(--font-cinzel), Georgia, serif;
+
+  /* ── Elevation & radii ───────────────────────────────── */
+  --shadow-gold: 0 0 0 1px rgb(255 204 0 / 0.25), 0 12px 32px -12px rgb(15 15 15 / 0.35);
+  --shadow-card: 0 1px 2px rgb(15 15 15 / 0.06), 0 8px 24px -12px rgb(15 15 15 / 0.18);
+  --radius-brand: 0.75rem;
+
+  /* ── Motion ──────────────────────────────────────────── */
+  --animate-marquee: marquee 40s linear infinite;
+  --animate-marquee-reverse: marquee-reverse 40s linear infinite;
+
+  @keyframes marquee {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+  @keyframes marquee-reverse {
+    from { transform: translateX(-50%); }
+    to { transform: translateX(0); }
+  }
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    @apply bg-marble text-charcoal font-sans antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  h1, h2, h3, h4 {
+    @apply font-serif tracking-tight;
+  }
+  ::selection {
+    @apply bg-gold text-charcoal;
+  }
+}
+
+@layer components {
+  /* Thin architectural gold rule */
+  .gold-rule {
+    @apply relative;
+  }
+  .gold-rule::after {
+    content: "";
+    @apply absolute bottom-0 left-0 h-px w-16 bg-gold;
+  }
+
+  /* Section label (small tracking-wide uppercase) */
+  .section-kicker {
+    @apply text-[11px] font-semibold uppercase tracking-[0.28em] text-gold-dark;
+  }
+
+  /* Serif display heading */
+  .display {
+    @apply font-serif text-3xl leading-tight sm:text-4xl lg:text-5xl;
+  }
+
+  /* Premium button – gold */
+  .btn-gold {
+    @apply inline-flex items-center justify-center gap-2 rounded-md bg-gold px-7 py-3.5
+      text-[12px] font-semibold uppercase tracking-[0.18em] text-charcoal
+      transition-all duration-300 hover:bg-gold-light hover:shadow-gold
+      focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold
+      disabled:pointer-events-none disabled:opacity-50;
+  }
+
+  /* Premium button – outline on dark */
+  .btn-outline-light {
+    @apply inline-flex items-center justify-center gap-2 rounded-md border border-white/30
+      px-7 py-3.5 text-[12px] font-semibold uppercase tracking-[0.18em] text-white
+      transition-all duration-300 hover:border-gold hover:bg-gold hover:text-charcoal
+      focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold
+      disabled:pointer-events-none disabled:opacity-50;
+  }
+
+  /* Premium button – outline dark (on light backgrounds) */
+  .btn-outline-dark {
+    @apply inline-flex items-center justify-center gap-2 rounded-md border border-charcoal/25
+      px-7 py-3.5 text-[12px] font-semibold uppercase tracking-[0.18em] text-charcoal
+      transition-all duration-300 hover:border-gold hover:bg-gold
+      focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold
+      disabled:pointer-events-none disabled:opacity-50;
+  }
+
+  /* Green accent button – brand-secondary */
+  .btn-green {
+    @apply inline-flex items-center justify-center gap-2 rounded-md bg-brand-green px-7 py-3.5
+      text-[12px] font-semibold uppercase tracking-[0.18em] text-white
+      transition-all duration-300 hover:bg-brand-green-bright
+      focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-green
+      disabled:pointer-events-none disabled:opacity-50;
+  }
+
+  /* Dark section wrapper */
+  .section-dark {
+    @apply bg-charcoal text-white;
+  }
+
+  /* Light section with warm beige */
+  .section-beige {
+    @apply bg-beige;
+  }
+
+  /* Vertical marquee columns for the design-ideas wall */
+  .marquee-col {
+    @apply overflow-hidden;
+    mask-image: linear-gradient(to bottom, transparent, black 12%, black 88%, transparent);
+  }
+  .marquee-track-up {
+    animation: marquee-up 42s linear infinite;
+  }
+  .marquee-track-down {
+    animation: marquee-down 42s linear infinite;
+  }
+  @keyframes marquee-up {
+    from { transform: translateY(0); }
+    to { transform: translateY(-50%); }
+  }
+  @keyframes marquee-down {
+    from { transform: translateY(-50%); }
+    to { transform: translateY(0); }
+  }
+
+  /* Infinite horizontal marquee for clients logos */
+  .marquee-h {
+    animation: var(--animate-marquee);
+    &:hover { animation-play-state: paused; }
+  }
+  .marquee-h-reverse {
+    animation: var(--animate-marquee-reverse);
+    &:hover { animation-play-state: paused; }
+  }
+}
+
+/* Scroll reveal – lightweight IntersectionObserver driven */
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition:
+    opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
+}
+.reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+@media (prefers-reduced-motion: reduce) {
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+  .marquee-track-up,
+  .marquee-track-down,
+  .marquee-h,
+  .marquee-h-reverse {
+    animation: none;
+  }
+}
+
+/* Smooth hidden scrollbar for horizontal racks */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Hero slide transitions */
+@keyframes heroIn {
+  from { transform: scale(1.08); opacity: 0.4; }
+  to { transform: scale(1); opacity: 0.8; }
+}
+@keyframes heroFade {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
