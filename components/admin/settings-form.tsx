@@ -55,9 +55,9 @@ export default function SettingsForm({
       Object.fromEntries(names.map((n) => [n, String(fd.get(n) ?? "")]));
 
     const settingKeys = [
-      "companyName", "companyTagline", "phone", "phoneDisplay", "whatsapp",
-      "email", "b2bEmail", "address", "addressShort", "mapsUrl", "hours",
-      "instagram", "facebook", "youtube",
+      "companyName", "companyTagline", "companyLegalName", "gstin", "phone",
+      "phoneDisplay", "whatsapp", "email", "b2bEmail", "address", "addressShort",
+      "mapsUrl", "hours", "instagram", "facebook", "youtube",
     ];
 
     startTransition(async () => {
@@ -101,6 +101,14 @@ export default function SettingsForm({
               <div>
                 <label className={labelCls}>Company name</label>
                 {field("companyName", settings["companyName"] ?? "")}
+              </div>
+              <div>
+                <label className={labelCls}>Legal name</label>
+                {field("companyLegalName", settings["companyLegalName"] ?? "")}
+              </div>
+              <div>
+                <label className={labelCls}>GSTIN</label>
+                {field("gstin", settings["gstin"] ?? "")}
               </div>
               <div>
                 <label className={labelCls}>Tagline</label>

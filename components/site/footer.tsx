@@ -298,10 +298,11 @@ export default async function Footer() {
       <div className="border-t border-white/10">
         <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-3 px-4 py-5 text-[11px] uppercase tracking-[0.14em] text-white/40 sm:px-6 md:flex-row">
           <p>
-            © {currentYear} Shiv Aadi – Mithila Tiles &amp; Marbles House. All
+            © {currentYear} {s.companyLegalName}. All
             rights reserved.
           </p>
           <p className="text-white/30">
+            {s.gstin ? <>GSTIN: {s.gstin} · </> : null}
             Tiles · Marble · Granite · Sanitaryware
           </p>
         </div>

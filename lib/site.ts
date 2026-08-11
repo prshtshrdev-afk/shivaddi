@@ -52,6 +52,8 @@ export async function getContactInfo(settings: SiteSettings = {}) {
   const s = Object.keys(settings).length ? settings : await getSiteSettings();
   return {
     companyName: s["companyName"] || "Shiv Aadi",
+    companyLegalName: s["companyLegalName"] || "SHIV AADI MITHILA TILES & MARBLES HOUSE",
+    gstin: s["gstin"] || "",
     tagline: s["companyTagline"] || "Mithila Tiles & Marbles House",
     phone: s["phone"] || "",
     phoneDisplay: s["phoneDisplay"] || s["phone"] || "",
