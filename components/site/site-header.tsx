@@ -64,16 +64,16 @@ export default function SiteHeader({
       {/* ── Top bar ─────────────────────────────── */}
       <div className="border-b border-white/10 bg-onyx">
         <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-2 text-[11px] uppercase tracking-[0.14em] text-white/60 sm:px-6">
-          <div className="hidden items-center gap-5 md:flex">
-            <span className="inline-flex items-center gap-1.5">
-              <MapPin className="h-3.5 w-3.5 text-gold" />
-              {contact.address}
+          <div className="hidden min-w-0 items-center gap-5 lg:flex">
+            <span className="inline-flex min-w-0 items-center gap-1.5 truncate">
+              <MapPin className="h-3.5 w-3.5 shrink-0 text-gold" />
+              <span className="truncate">{contact.address}</span>
             </span>
           </div>
           <div className="flex items-center gap-5">
-            <span className="inline-flex items-center gap-1.5">
-              <Clock className="h-3.5 w-3.5 text-gold" />
-              {contact.hours}
+            <span className="hidden items-center gap-1.5 sm:inline-flex">
+              <Clock className="h-3.5 w-3.5 shrink-0 text-gold" />
+              <span className="truncate">{contact.hours}</span>
             </span>
             <a
               href={`tel:${contact.phoneDisplay.replace(/[^0-9+]/g, "")}`}
