@@ -1,0 +1,12 @@
+node_modules
+.next
+.git
+.gitignore
+.env
+.env.example
+*.md
+front end page
+.agents
+.claude
+.windsurf
+docker-compose.yml
