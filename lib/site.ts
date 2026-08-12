@@ -42,10 +42,8 @@ export const getPageContent = cache(
 );
 
 export async function getSiteUrl() {
-  return (
-    process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "") ??
-    "http://localhost:3000"
-  );
+  const url = process.env.NEXT_PUBLIC_SITE_URL?.trim().replace(/\/$/, "") ?? "";
+  return url || "http://localhost:3000";
 }
 
 export async function getContactInfo(settings: SiteSettings = {}) {
