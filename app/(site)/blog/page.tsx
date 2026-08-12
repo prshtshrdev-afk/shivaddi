@@ -11,7 +11,7 @@ export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
   title: "Blog",
   description:
-    "Guides and inspiration on choosing tiles, marble, granite and sanitaryware — from the team at Shiv Aadi, Darbhanga.",
+    "Guides and inspiration on choosing tiles, marble, granite and sanitaryware — from the team at Shiv Aadi, Madhubani.",
 };
 
 export default async function BlogPage() {

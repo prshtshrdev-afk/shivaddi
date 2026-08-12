@@ -14,7 +14,7 @@ export default async function SiteLayout({ children }: { children: ReactNode }) 
     "@type": "HomeAndConstructionBusiness",
     name: `${s.companyName} – ${s.tagline}`,
     description:
-      "Premium tiles, marble, granite and sanitaryware showroom serving Darbhanga, Bihar and nearby districts.",
+      "Premium tiles, marble, granite and sanitaryware showroom serving Madhubani, Bihar and nearby districts.",
     telephone: s.phone || undefined,
     email: s.email || undefined,
     address: s.address

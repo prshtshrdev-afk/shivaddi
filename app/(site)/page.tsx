@@ -30,9 +30,9 @@ import type { ProductCardData } from "@/components/products/product-card";
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: "Premium Tiles, Marble, Granite & Sanitaryware in Darbhanga | Shiv Aadi",
+  title: "Premium Tiles, Marble, Granite & Sanitaryware in Madhubani | Shiv Aadi",
   description:
-    "Premium tiles, marble, granite and sanitaryware in Darbhanga, Bihar. B2B wholesale pricing for builders, architects and dealers. Visit our showroom or request a quote.",
+    "Premium tiles, marble, granite and sanitaryware in Madhubani, Bihar. B2B wholesale pricing for builders, architects and dealers. Visit our showroom or request a quote.",
 };
 
 function productThumb(
@@ -298,7 +298,7 @@ export default async function HomePage() {
       <StatStrip
         stats={stats}
         heading="A Decade of Delivering Premium Surfaces"
-        description="From our Darbhanga showroom to projects across Bihar & Jharkhand — premium materials, honest pricing and dependable supply, every single time."
+        description="From our Madhubani showroom to projects across Bihar & Jharkhand — premium materials, honest pricing and dependable supply, every single time."
       />
       <PromoBand
         image={promoImage}

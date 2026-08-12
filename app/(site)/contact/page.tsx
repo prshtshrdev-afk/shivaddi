@@ -14,7 +14,7 @@ export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
   title: "Contact Us",
   description:
-    "Visit the Shiv Aadi showroom in Darbhanga, call us, or send a message. Premium tiles, marble, granite and sanitaryware for homes and businesses.",
+    "Visit the Shiv Aadi showroom in Madhubani, call us, or send a message. Premium tiles, marble, granite and sanitaryware for homes and businesses.",
 };
 
 export default async function ContactPage() {

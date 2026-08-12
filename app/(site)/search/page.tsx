@@ -10,7 +10,7 @@ export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
   title: "Search Products | Shiv Aadi",
   description:
-    "Search the Shiv Aadi catalogue - tiles, marble, granite and sanitaryware in Darbhanga.",
+    "Search the Shiv Aadi catalogue - tiles, marble, granite and sanitaryware in Madhubani.",
 };
 
 export default async function SearchPage({

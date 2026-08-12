@@ -25,14 +25,15 @@ export const metadata: Metadata = {
     template: "%s – Shiv Aadi | Mithila Tiles & Marbles House",
   },
   description:
-    "Premium tiles, marble, granite and sanitaryware in Darbhanga, Bihar. B2B wholesale pricing for builders, architects and dealers. Visit our showroom or request a quote.",
+    "Premium tiles, marble, granite and sanitaryware in Madhubani, Bihar. B2B wholesale pricing for builders, architects and dealers. Visit our showroom or request a quote.",
   keywords: [
     "tiles",
     "marble",
     "granite",
     "sanitaryware",
     "Bihar",
-    "Darbhanga",
+    "Madhubani",
+    "Benipatti",
     "Mithila",
     "B2B tiles",
     "tile dealer",
@@ -45,7 +46,7 @@ export const metadata: Metadata = {
     title:
       "Shiv Aadi | Mithila Tiles & Marbles House – Premium Tiles, Marble, Granite & Sanitaryware",
     description:
-      "Premium tiles, marble, granite and sanitaryware in Darbhanga, Bihar. B2B wholesale pricing for builders, architects and dealers.",
+      "Premium tiles, marble, granite and sanitaryware in Madhubani, Bihar. B2B wholesale pricing for builders, architects and dealers.",
   },
   twitter: {
     card: "summary_large_image",

@@ -11,7 +11,11 @@ export default function LoginForm() {
   const [error, setError] = useState("");
   const [pending, setPending] = useState(false);
 
-  const callbackUrl = searchParams.get("callbackUrl") ?? "/admin";
+  const rawCallbackUrl = searchParams.get("callbackUrl");
+  const callbackUrl =
+    rawCallbackUrl?.startsWith("/") && !rawCallbackUrl.startsWith("//")
+      ? rawCallbackUrl
+      : "/admin";
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
