@@ -20,9 +20,9 @@ export const metadata: Metadata = {
     process.env.NEXT_PUBLIC_SITE_URL?.trim() || "http://localhost:3000",
   ),
   icons: {
-    icon: "/shivadii-favicon.png",
-    shortcut: "/shivadii-favicon.png",
-    apple: "/shivadii-favicon.png",
+    icon: "/shivadii-favicon.webp",
+    shortcut: "/shivadii-favicon.webp",
+    apple: "/shivadii-favicon.webp",
   },
   title: {
     default:
