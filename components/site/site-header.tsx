@@ -100,28 +100,28 @@ export default function SiteHeader({
 
           <Logo dark className="shrink-0" />
 
-          {/* Desktop search */}
+          {/* Desktop search - large prominent search */}
           <form
             action="/search"
-            className="relative mx-3 hidden max-w-sm flex-1 min-w-0 xl:block"
+            className="relative mx-3 hidden max-w-xl flex-1 min-w-0 xl:block"
             role="search"
           >
             <label className="relative block">
-              <Search className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-white/40" />
+              <Search className="pointer-events-none absolute left-5 top-1/2 h-5 w-5 -translate-y-1/2 text-white/40" />
               <input
                 name="q"
                 type="search"
-                placeholder="Search tiles, marble, sanitaryware…"
+                placeholder="Search tiles, marble, sanitaryware, granite…"
                 aria-label="Search products"
-                className="h-10 w-full rounded-[2px] border border-white/15 bg-onyx pl-11 pr-4 text-sm text-white placeholder:text-white/35 transition-colors duration-300 focus:border-gold focus:outline-none"
+                className="h-12 w-full rounded-[2px] border border-white/15 bg-onyx pl-14 pr-12 text-base text-white placeholder:text-white/35 transition-colors duration-300 focus:border-gold focus:outline-none"
               />
             </label>
             <button
               type="submit"
               aria-label="Submit search"
-              className="absolute right-1 top-1 flex h-8 w-8 items-center justify-center text-white/50 transition-colors hover:text-gold"
+              className="absolute right-1 top-1 flex h-10 w-10 items-center justify-center text-white/50 transition-colors hover:text-gold"
             >
-              <Search className="h-4 w-4" />
+              <Search className="h-5 w-5" />
             </button>
           </form>
 
@@ -240,22 +240,6 @@ export default function SiteHeader({
             </a>
           </div>
         </div>
-      </div>
-
-      {/* ── Mobile search ────────────────────────── */}
-      <div className="border-b border-white/10 bg-charcoal px-4 py-2.5 sm:px-6 lg:hidden">
-        <form action="/search" className="relative" role="search">
-          <label className="relative block">
-            <Search className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-white/40" />
-            <input
-              name="q"
-              type="search"
-              placeholder="Search tiles, marble, sanitaryware…"
-              aria-label="Search products"
-              className="h-10 w-full rounded-[2px] border border-white/15 bg-onyx pl-11 pr-4 text-sm text-white placeholder:text-white/35 transition-colors duration-300 focus:border-gold focus:outline-none"
-            />
-          </label>
-        </form>
       </div>
 
       {/* ── Mobile menu ─────────────────────────── */}
