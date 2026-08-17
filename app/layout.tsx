@@ -19,6 +19,11 @@ export const metadata: Metadata = {
   metadataBase: new URL(
     process.env.NEXT_PUBLIC_SITE_URL?.trim() || "http://localhost:3000",
   ),
+  icons: {
+    icon: "/shivadii-favicon.png",
+    shortcut: "/shivadii-favicon.png",
+    apple: "/shivadii-favicon.png",
+  },
   title: {
     default:
       "Shiv Aadi | Mithila Tiles & Marbles House – Premium Tiles, Marble, Granite & Sanitaryware",

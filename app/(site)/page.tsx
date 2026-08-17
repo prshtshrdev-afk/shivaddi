@@ -5,6 +5,7 @@ import HeroSlider from "@/components/home/hero-slider";
 import CategoryRail, {
   type CategoryTile,
 } from "@/components/home/category-rail";
+import CategoryGrid from "@/components/home/category-grid";
 import PromoBand from "@/components/home/promo-band";
 import FeaturedProducts from "@/components/home/featured-products";
 import ExploreMatters, {
@@ -73,7 +74,7 @@ async function getHeroSlides() {
         title: "800×1600 Large Format Slabs, Engineered for Grand Spaces",
         description:
           "Fewer joints, grander rooms. Discover vitrified slabs that read as a single, continuous surface of stone.",
-        primaryCta: { label: "View Collections", href: "/categories/tiles" },
+        primaryCta: { label: "View Collections", href: "/categories/large-tiles" },
         secondaryCta: { label: "Talk to an Expert", href: waLink || "/contact" },
       },
       {
@@ -173,8 +174,10 @@ export default async function HomePage() {
     prisma.product.findMany({
       where: {
         published: true,
-        category: {
-          is: { slug: { in: ["bathroom-accessories", "sanitaryware"] } },
+        categoryLinks: {
+          some: {
+            category: { slug: { in: ["accent-tiles", "3d-tiles", "flexi-tiles"] } },
+          },
         },
       },
       orderBy: { createdAt: "desc" },
@@ -294,6 +297,7 @@ export default async function HomePage() {
     <>
       <HeroSlider slides={slides} />
       <CategoryRail tiles={railTiles} />
+      <CategoryGrid categories={categories} />
       <LargeSlabs products={slabProducts} />
       <StatStrip
         stats={stats}
@@ -340,11 +344,11 @@ export default async function HomePage() {
       <Testimonials items={testimonials} />
       <GalleryStrip images={gallery} />
       <AccessoriesBand
-        title="Complete The Installation With the Right Accessories"
-        description="Wash basins, bath fittings and installation essentials that pair perfectly with your surfaces — sourced, verified and stocked under one roof."
+        title="Finish the Space With Designer Accents"
+        description="Decorative, textured and specialty tiles that complete the look — sourced, verified and stocked under one roof."
         chips={accessoryChips}
-        ctaHref="/categories/sanitaryware"
-        ctaLabel="Explore Accessories"
+        ctaHref="/categories/accent-tiles"
+        ctaLabel="Explore Accents"
         image={accessoryProducts[0] ? productThumb(accessoryProducts[0]) : null}
       />
       <BlogStrip posts={posts} />

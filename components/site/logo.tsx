@@ -1,19 +1,17 @@
 import Link from "next/link";
 import { cn } from "@/lib/utils";
+import Image from "next/image";
 
 export function LogoMark({ className }: { className?: string }) {
   return (
-    <span
-      className={cn(
-        "relative inline-flex h-12 w-12 items-center justify-center border border-gold/60 bg-charcoal text-[15px] font-bold tracking-tight text-gold",
-        className,
-      )}
+    <Image
+      src="/shivadii-logo.png"
+      alt="Shiv Aadi Logo"
+      width={48}
+      height={48}
+      className={cn("transition-transform duration-300 group-hover:scale-105", className)}
       aria-hidden
-    >
-      <span className="font-display">SA</span>
-      <span className="absolute -left-1 -top-1 h-2 w-2 border-l border-t border-gold" />
-      <span className="absolute -bottom-1 -right-1 h-2 w-2 border-b border-r border-gold" />
-    </span>
+    />
   );
 }
 
