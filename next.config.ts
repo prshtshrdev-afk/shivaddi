@@ -20,6 +20,10 @@ const nextConfig: NextConfig = {
         protocol: "https",
         hostname: "server.orientbell.com",
       },
+      {
+        protocol: "https",
+        hostname: "*.orientbell.com",
+      },
     ],
   },
 };
