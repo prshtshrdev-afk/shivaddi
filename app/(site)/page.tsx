@@ -179,7 +179,7 @@ export default async function HomePage() {
             category: { slug: { in: ["accent-tiles", "3d-tiles", "flexi-tiles"] } },
           },
         },
-      },
+      } as unknown as import("@/app/generated/prisma/client").Prisma.ProductWhereInput,
       orderBy: { createdAt: "desc" },
       take: 6,
       include: { images: { orderBy: { sortOrder: "asc" } }, category: true },
@@ -243,8 +243,8 @@ export default async function HomePage() {
   }));
 
   const accessoryChips: AccessoryChip[] = accessoryProducts.map((p) => ({
-    label: p.name,
-    sub: p.size,
+    label: p.name ?? "",
+    sub: p.size ?? "",
   }));
 
   const whyUsItems = whyUsItemsRaw
