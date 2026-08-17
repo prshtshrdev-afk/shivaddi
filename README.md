@@ -6,21 +6,21 @@ Premium tiles, marble, granite and sanitaryware showroom website for Darbhanga, 
 
 ```bash
 npm install
-npm run db:up      # start the PostgreSQL container (docker start shivaddi-postgres)
-npm run db:deploy  # apply prisma migrations
+npm run db:deploy  # apply prisma migrations to Neon (serverless Postgres)
 npm run db:seed    # seed categories, products, admin user, content
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000).
+The database is **Neon** (serverless Postgres, online). Set `DATABASE_URL` in `.env`
+to your Neon connection string (see `.env.example`). No local Docker/Postgres needed.
 
 Useful commands:
 
 | Command               | Purpose                              |
 | --------------------- | ------------------------------------ |
-| `npm run db:up`       | Start the local Postgres container   |
 | `npm run db:deploy`   | Apply migrations (`prisma migrate deploy`) |
 | `npm run db:seed`     | Seed catalog + demo content          |
+| `npm run db:import`   | Import the full Orientbell catalog into the DB |
 | `npm run lint`        | ESLint check                         |
 | `npm run typecheck`   | `tsc --noEmit`                       |
 | `npm run build`       | Production build                     |

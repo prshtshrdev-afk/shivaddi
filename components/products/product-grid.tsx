@@ -3,10 +3,25 @@
 import { useState, useTransition } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-import { Search, SlidersHorizontal, X, ChevronDown } from "lucide-react";
+import { Search, SlidersHorizontal, X, ChevronDown, ChevronLeft, ChevronRight } from "lucide-react";
 import type { Category } from "@/app/generated/prisma/client";
 import { cn } from "@/lib/utils";
 import ProductCard, { type ProductCardData } from "./product-card";
+
+function paginationPages(page: number, total: number, perPage: number) {
+  const last = Math.max(1, Math.ceil(total / perPage));
+  const shown = Math.min(page, last);
+  const pages: number[] = [];
+  for (let n = 1; n <= last; n++) {
+    if (n === 1 || n === last || Math.abs(n - shown) <= 2) pages.push(n);
+  }
+  const out: number[] = [];
+  for (let i = 0; i < pages.length; i++) {
+    if (i > 0 && pages[i] - pages[i - 1] > 1) out.push(0);
+    out.push(pages[i]);
+  }
+  return out;
+}
 
 const PRICE_TYPES = [
   { value: "EXACT", label: "Exact Price" },
@@ -27,6 +42,9 @@ export default function ProductGrid({
   search,
   priceType,
   sort,
+  total,
+  page = 1,
+  perPage = 24,
 }: {
   products: ProductCardData[];
   categories: (Category & { children?: Category[] })[];
@@ -34,6 +52,9 @@ export default function ProductGrid({
   search?: string;
   priceType?: string;
   sort?: string;
+  total?: number;
+  page?: number;
+  perPage?: number;
 }) {
   const router = useRouter();
   const params = useSearchParams();
@@ -47,7 +68,14 @@ export default function ProductGrid({
       if (v) next.set(k, v);
       else next.delete(k);
     }
+    next.delete("page");
     startTransition(() => router.push(`/products?${next.toString()}`));
+  }
+
+  function pagedParams(n: number) {
+    const next = new URLSearchParams(params);
+    next.set("page", String(n));
+    return next.toString();
   }
 
   return (
@@ -215,11 +243,55 @@ export default function ProductGrid({
             </Link>
           </div>
         ) : (
-          <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-            {products.map((product) => (
-              <ProductCard key={product.id} product={product} />
-            ))}
-          </div>
+          <>
+            <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+              {products.map((product) => (
+                <ProductCard key={product.id} product={product} />
+              ))}
+            </div>
+            {total && total > perPage ? (
+              <nav className="mt-12 flex items-center justify-center gap-2" aria-label="Pagination">
+                {page > 1 && (
+                  <Link
+                    href={`?${pagedParams(page - 1)}`}
+                    className="inline-flex items-center gap-1 border border-charcoal/15 bg-white px-4 py-2.5 text-[12px] font-semibold uppercase tracking-[0.14em] text-charcoal transition-colors hover:border-gold hover:text-gold-dark"
+                  >
+                    <ChevronLeft className="h-4 w-4" />
+                    Prev
+                  </Link>
+                )}
+                {paginationPages(page, total, perPage).map((n, i) =>
+                  n === 0 ? (
+                    <span key={`gap-${i}`} className="px-2 text-stone">
+                      …
+                    </span>
+                  ) : (
+                    <Link
+                      key={n}
+                      href={`?${pagedParams(n)}`}
+                      aria-current={n === page ? "page" : undefined}
+                      className={`px-4 py-2.5 text-[12px] font-semibold uppercase tracking-[0.14em] transition-colors ${
+                        n === page
+                          ? "bg-gold text-charcoal"
+                          : "border border-charcoal/15 bg-white text-charcoal hover:border-gold hover:text-gold-dark"
+                      }`}
+                    >
+                      {n}
+                    </Link>
+                  ),
+                )}
+                {page < Math.ceil(total / perPage) && (
+                  <Link
+                    href={`?${pagedParams(page + 1)}`}
+                    className="inline-flex items-center gap-1 border border-charcoal/15 bg-white px-4 py-2.5 text-[12px] font-semibold uppercase tracking-[0.14em] text-charcoal transition-colors hover:border-gold hover:text-gold-dark"
+                  >
+                    Next
+                    <ChevronRight className="h-4 w-4" />
+                  </Link>
+                )}
+              </nav>
+            ) : null}
+          </>
         )}
       </div>
     </div>

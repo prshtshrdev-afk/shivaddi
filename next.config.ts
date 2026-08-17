@@ -12,6 +12,14 @@ const nextConfig: NextConfig = {
         protocol: "https",
         hostname: "**.unsplash.com",
       },
+      {
+        protocol: "https",
+        hostname: "images.orientbell.com",
+      },
+      {
+        protocol: "https",
+        hostname: "server.orientbell.com",
+      },
     ],
   },
 };

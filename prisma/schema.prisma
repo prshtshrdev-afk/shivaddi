@@ -67,6 +67,7 @@ model Category {
   displayOrder Int        @default(0)
   published    Boolean    @default(true)
   products     Product[]
+  productLinks ProductCategory[]
   createdAt    DateTime   @default(now())
   updatedAt    DateTime   @updatedAt
 
@@ -97,10 +98,11 @@ model Product {
   featured        Boolean        @default(false)
   isNew           Boolean        @default(false)
   tags            String[]       @default([])
-  published       Boolean        @default(false)
+published       Boolean       @default(false)
   seoTitle        String?
   seoDescription  String?
   images          ProductImage[]
+  categoryLinks   ProductCategory[]
   leads           Lead[]         @relation("LeadProduct")
   createdAt       DateTime       @default(now())
   updatedAt       DateTime       @updatedAt
@@ -108,6 +110,19 @@ model Product {
   @@index([categoryId])
   @@index([published])
   @@index([featured])
+}
+
+model ProductCategory {
+  id         String   @id @default(cuid())
+  productId  String
+  product    Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  categoryId String
+  category   Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  sortOrder  Int      @default(0)
+  createdAt  DateTime @default(now())
+
+  @@unique([productId, categoryId])
+  @@index([categoryId])
 }
 
 model ProductImage {

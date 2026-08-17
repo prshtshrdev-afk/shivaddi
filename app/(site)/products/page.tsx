@@ -6,6 +6,8 @@ import { toProductCardData } from "@/components/products/serialize";
 
 export const dynamic = "force-dynamic";
 
+const PER_PAGE = 24;
+
 export const metadata: Metadata = {
   title: "Products",
   description:
@@ -22,6 +24,10 @@ export default async function ProductsPage({
     typeof q.priceType === "string" ? q.priceType : undefined;
   const sort =
     typeof q.sort === "string" ? q.sort : undefined;
+  const page = Math.max(
+    1,
+    parseInt(typeof q.page === "string" ? q.page : "1", 10) || 1,
+  );
 
   const where: Prisma.ProductWhereInput = {
     published: true,
@@ -30,6 +36,7 @@ export default async function ProductsPage({
           OR: [
             { category: { slug: category } },
             { category: { parent: { slug: category } } },
+            { categoryLinks: { some: { category: { slug: category } } } },
           ],
         }
       : {}),
@@ -52,14 +59,19 @@ export default async function ProductsPage({
         ? { price: "desc" as const }
         : { createdAt: "desc" as const };
 
-  const products = await prisma.product.findMany({
-    where,
-    orderBy,
-    include: {
-      images: { orderBy: { sortOrder: "asc" } },
-      category: { select: { name: true, slug: true } },
-    },
-  });
+  const [total, products] = await Promise.all([
+    prisma.product.count({ where }),
+    prisma.product.findMany({
+      where,
+      orderBy,
+      skip: (page - 1) * PER_PAGE,
+      take: PER_PAGE,
+      include: {
+        images: { orderBy: { sortOrder: "asc" } },
+        category: { select: { name: true, slug: true } },
+      },
+    }),
+  ]);
 
   const categories = await prisma.category.findMany({
     where: { published: true, parentId: null },
@@ -77,6 +89,9 @@ export default async function ProductsPage({
       search={search}
       priceType={priceType}
       sort={sort}
+      total={total}
+      page={page}
+      perPage={PER_PAGE}
     />
   );
 }

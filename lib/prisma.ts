@@ -7,9 +7,7 @@ const globalForPrisma = globalThis as unknown as {
 
 function createClient() {
   const adapter = new PrismaPg({
-    connectionString:
-      process.env.DATABASE_URL ??
-      "postgresql://shivaddi:shivaddi_dev_password@127.0.0.1:5432/shivaddi?schema=public",
+    connectionString: process.env.DATABASE_URL,
   });
   return new PrismaClient({ adapter });
 }

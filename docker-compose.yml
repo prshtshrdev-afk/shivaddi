@@ -1,22 +1,4 @@
 services:
-  postgres:
-    image: postgres:16-alpine
-    container_name: shivaddi-postgres
-    restart: unless-stopped
-    environment:
-      POSTGRES_USER: shivaddi
-      POSTGRES_PASSWORD: shivaddi_dev_password
-      POSTGRES_DB: shivaddi
-    ports:
-      - "5432:5432"
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U shivaddi -d shivaddi"]
-      interval: 5s
-      timeout: 5s
-      retries: 10
-
   app:
     build:
       context: .
@@ -24,11 +6,8 @@ services:
         NEXT_PUBLIC_SITE_URL: ${NEXT_PUBLIC_SITE_URL:-http://localhost:3000}
     container_name: shivaddi-app
     restart: unless-stopped
-    depends_on:
-      postgres:
-        condition: service_healthy
     environment:
-      DATABASE_URL: postgresql://shivaddi:shivaddi_dev_password@postgres:5432/shivaddi?schema=public
+      DATABASE_URL: ${DATABASE_URL}
       AUTH_SECRET: ${AUTH_SECRET}
       AUTH_TRUST_HOST: "true"
       AUTH_URL: ${NEXT_PUBLIC_SITE_URL:-http://localhost:3000}
@@ -36,6 +15,3 @@ services:
       NEXT_PUBLIC_WHATSAPP_NUMBER: ${NEXT_PUBLIC_WHATSAPP_NUMBER:-}
     ports:
       - "3000:3000"
-
-volumes:
-  postgres_data:

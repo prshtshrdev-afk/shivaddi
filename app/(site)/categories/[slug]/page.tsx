@@ -2,12 +2,14 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
-import { ChevronRight, Layers } from "lucide-react";
+import { ChevronRight, Layers, ChevronLeft } from "lucide-react";
 import { prisma } from "@/lib/prisma";
 import ProductCard from "@/components/products/product-card";
 import { toProductCardData } from "@/components/products/serialize";
 
 export const dynamic = "force-dynamic";
+
+const PER_PAGE = 24;
 
 export async function generateMetadata(
   { params }: PageProps<"/categories/[slug]">,
@@ -25,8 +27,14 @@ export async function generateMetadata(
 
 export default async function CategoryPage({
   params,
+  searchParams,
 }: PageProps<"/categories/[slug]">) {
   const { slug } = await params;
+  const sp = await searchParams;
+  const page = Math.max(
+    1,
+    parseInt(Array.isArray(sp.page) ? sp.page[0] : sp.page ?? "1", 10) || 1,
+  );
 
   const category = await prisma.category.findUnique({
     where: { slug },
@@ -40,19 +48,31 @@ export default async function CategoryPage({
   });
   if (!category || !category.published) notFound();
 
-  const products = await prisma.product.findMany({
-    where: {
-      published: true,
-      categoryId: {
-        in: [category.id, ...category.children.map((c) => c.id)],
+  const childIds = category.children.map((c) => c.id);
+  const where = {
+    published: true,
+    OR: [
+      { categoryId: { in: [category.id, ...childIds] } },
+      { categoryLinks: { some: { categoryId: { in: [category.id, ...childIds] } } } },
+    ],
+  };
+
+  const [total, products] = await Promise.all([
+    prisma.product.count({ where }),
+    prisma.product.findMany({
+      where,
+      orderBy: [{ featured: "desc" }, { createdAt: "desc" }],
+      skip: (page - 1) * PER_PAGE,
+      take: PER_PAGE,
+      include: {
+        images: { orderBy: { sortOrder: "asc" } },
+        category: { select: { name: true, slug: true } },
       },
-    },
-    orderBy: [{ featured: "desc" }, { createdAt: "desc" }],
-    include: {
-      images: { orderBy: { sortOrder: "asc" } },
-      category: { select: { name: true, slug: true } },
-    },
-  });
+    }),
+  ]);
+
+  const totalPages = Math.max(1, Math.ceil(total / PER_PAGE));
+  const shown = Math.min(page, totalPages);
 
   return (
     <div className="bg-beige pb-20 pt-8 sm:pt-12">
@@ -106,7 +126,7 @@ export default async function CategoryPage({
             )}
             <p className="mt-4 inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.18em] text-gold">
               <Layers className="h-4 w-4" />
-              {products.length} product{products.length === 1 ? "" : "s"} available
+              {total} product{total === 1 ? "" : "s"} available
             </p>
           </div>
         </div>
@@ -127,7 +147,7 @@ export default async function CategoryPage({
         )}
 
         {/* Products */}
-        {products.length === 0 ? (
+        {total === 0 ? (
           <div className="border border-charcoal/10 bg-white px-8 py-20 text-center">
             <h2 className="font-serif text-2xl font-bold text-charcoal">
               No products in this category yet
@@ -140,11 +160,63 @@ export default async function CategoryPage({
             </Link>
           </div>
         ) : (
-          <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
-            {products.map((p) => (
-              <ProductCard key={p.id} product={toProductCardData(p)} />
-            ))}
-          </div>
+          <>
+            <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
+              {products.map((p) => (
+                <ProductCard key={p.id} product={toProductCardData(p)} />
+              ))}
+            </div>
+
+            {totalPages > 1 && (
+              <nav className="mt-12 flex items-center justify-center gap-2" aria-label="Pagination">
+                {shown > 1 && (
+                  <Link
+                    href={`/categories/${category.slug}?page=${shown - 1}`}
+                    className="inline-flex items-center gap-1 border border-charcoal/15 bg-white px-4 py-2.5 text-[12px] font-semibold uppercase tracking-[0.14em] text-charcoal transition-colors hover:border-gold hover:text-gold-dark"
+                  >
+                    <ChevronLeft className="h-4 w-4" />
+                    Prev
+                  </Link>
+                )}
+                {Array.from({ length: totalPages }, (_, i) => i + 1)
+                  .filter((n) => n === 1 || n === totalPages || Math.abs(n - shown) <= 2)
+                  .reduce<number[]>((acc, n, i, arr) => {
+                    if (i > 0 && n - arr[i - 1] > 1) acc.push(-1);
+                    acc.push(n);
+                    return acc;
+                  }, [])
+                  .map((n, i) =>
+                    n === -1 ? (
+                      <span key={`gap-${i}`} className="px-2 text-stone">
+                        …
+                      </span>
+                    ) : (
+                      <Link
+                        key={n}
+                        href={`/categories/${category.slug}?page=${n}`}
+                        aria-current={n === shown ? "page" : undefined}
+                        className={`px-4 py-2.5 text-[12px] font-semibold uppercase tracking-[0.14em] transition-colors ${
+                          n === shown
+                            ? "bg-gold text-charcoal"
+                            : "border border-charcoal/15 bg-white text-charcoal hover:border-gold hover:text-gold-dark"
+                        }`}
+                      >
+                        {n}
+                      </Link>
+                    ),
+                  )}
+                {shown < totalPages && (
+                  <Link
+                    href={`/categories/${category.slug}?page=${shown + 1}`}
+                    className="inline-flex items-center gap-1 border border-charcoal/15 bg-white px-4 py-2.5 text-[12px] font-semibold uppercase tracking-[0.14em] text-charcoal transition-colors hover:border-gold hover:text-gold-dark"
+                  >
+                    Next
+                    <ChevronRight className="h-4 w-4" />
+                  </Link>
+                )}
+              </nav>
+            )}
+          </>
         )}
       </div>
     </div>
