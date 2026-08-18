@@ -15,7 +15,7 @@ import {
   Search,
   Camera,
 } from "lucide-react";
-import Logo from "./logo";
+import { LogoMark } from "./logo";
 import { cn } from "@/lib/utils";
 import type { Category } from "@/app/generated/prisma/client";
 
@@ -86,6 +86,29 @@ export default function SiteHeader({
         </div>
       </div>
 
+      {/* ── Search bar ───────────────────────────── */}
+      <div className="border-b border-white/10 bg-charcoal/95 backdrop-blur">
+        <div className="mx-auto flex max-w-7xl items-center gap-4 px-4 py-3 sm:px-6">
+          <LogoMark className="h-14 w-14 shrink-0" />
+          <form
+            action="/search"
+            className="flex-1 max-w-2xl mx-auto"
+            role="search"
+          >
+            <label className="relative block w-full">
+              <Search className="pointer-events-none absolute left-5 top-1/2 h-5 w-5 -translate-y-1/2 text-white/40" />
+              <input
+                name="q"
+                type="search"
+                placeholder="Search tiles, marble, sanitaryware, granite…"
+                aria-label="Search products"
+                className="h-14 w-full rounded-[2px] border border-white/15 bg-onyx pl-14 pr-12 text-lg text-white placeholder:text-white/35 transition-colors duration-300 focus:border-gold focus:outline-none"
+              />
+            </label>
+          </form>
+        </div>
+      </div>
+
       {/* ── Main bar ────────────────────────────── */}
       <div className="relative z-50 border-b border-white/10 bg-charcoal/95 backdrop-blur">
         <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-3 sm:px-6">
@@ -97,33 +120,6 @@ export default function SiteHeader({
           >
             {mobileOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
           </button>
-
-          <Logo dark className="shrink-0" />
-
-          {/* Desktop search - large prominent search */}
-          <form
-            action="/search"
-            className="relative mx-3 hidden max-w-xl flex-1 min-w-0 xl:block"
-            role="search"
-          >
-            <label className="relative block">
-              <Search className="pointer-events-none absolute left-5 top-1/2 h-5 w-5 -translate-y-1/2 text-white/40" />
-              <input
-                name="q"
-                type="search"
-                placeholder="Search tiles, marble, sanitaryware, granite…"
-                aria-label="Search products"
-                className="h-12 w-full rounded-[2px] border border-white/15 bg-onyx pl-14 pr-12 text-base text-white placeholder:text-white/35 transition-colors duration-300 focus:border-gold focus:outline-none"
-              />
-            </label>
-            <button
-              type="submit"
-              aria-label="Submit search"
-              className="absolute right-1 top-1 flex h-10 w-10 items-center justify-center text-white/50 transition-colors hover:text-gold"
-            >
-              <Search className="h-5 w-5" />
-            </button>
-          </form>
 
           {/* Desktop nav */}
           <nav className="hidden items-center gap-4 text-[11px] font-medium uppercase tracking-[0.12em] xl:gap-6 xl:text-[12px] xl:tracking-[0.16em] lg:flex">

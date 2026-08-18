@@ -92,19 +92,9 @@ export default async function Footer() {
       {/* ── Main footer ──────────────────────────── */}
       <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6">
         <div className="grid grid-cols-1 gap-12 md:grid-cols-3 lg:grid-cols-12">
-          {/* Brand */}
+{/* Brand */}
           <div className="lg:col-span-3">
-            <div className="flex items-center gap-3">
-              <LogoMark />
-              <div className="leading-none">
-                <p className="font-display text-xl font-bold tracking-wide">
-                  SHIV <span className="text-gold">AADI</span>
-                </p>
-                <p className="mt-1 text-[10px] uppercase tracking-[0.22em] text-white/50">
-                  Mithila Tiles &amp; Marbles House
-                </p>
-              </div>
-            </div>
+            <LogoMark className="h-16 w-16" />
             <p className="mt-5 text-sm leading-relaxed text-white/60">
               Premium tiles, marble, granite and sanitaryware for homes and
               businesses across India. A decade of trusted supply to builders,
