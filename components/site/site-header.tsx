@@ -28,7 +28,6 @@ type ContactInfo = {
 const NAV_ITEMS = [
   { label: "HOME", href: "/" },
   { label: "PRODUCTS", href: "/products" },
-  { label: "CATEGORIES", href: "/categories" },
   { label: "PROJECTS", href: "/projects" },
   { label: "GALLERY", href: "/gallery" },
   { label: "BLOG", href: "/blog" },
