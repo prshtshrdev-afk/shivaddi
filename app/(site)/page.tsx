@@ -6,6 +6,7 @@ import CategoryRail, {
   type CategoryTile,
 } from "@/components/home/category-rail";
 import CategoryGrid from "@/components/home/category-grid";
+import CollectionProductGrid from "@/components/home/collection-product-grid";
 import PromoBand from "@/components/home/promo-band";
 import FeaturedProducts from "@/components/home/featured-products";
 import ExploreMatters, {
@@ -298,6 +299,7 @@ export default async function HomePage() {
       <HeroSlider slides={slides} />
       <CategoryRail tiles={railTiles} />
       <CategoryGrid categories={categories} />
+      <CollectionProductGrid />
       <LargeSlabs products={slabProducts} />
       <StatStrip
         stats={stats}

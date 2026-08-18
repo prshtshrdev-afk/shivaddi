@@ -52,8 +52,8 @@ export default function CategoryGrid({
           description="Tiles, marble, granite and sanitaryware — every surface your project needs, under one roof."
         />
 
-        <div className="grid grid-cols-2 gap-4 sm:gap-6 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6">
-          {categories.map((cat, i) => (
+        <div className="grid grid-cols-2 gap-4 sm:gap-6 lg:grid-cols-4 xl:grid-cols-4">
+          {categories.slice(0, 8).map((cat, i) => (
             <Reveal key={cat.id} delay={i * 60}>
               <Link
                 href={`/categories/${cat.slug}`}
