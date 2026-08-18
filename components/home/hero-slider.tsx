@@ -59,7 +59,7 @@ export default function HeroSlider({
 
         {/* Banner caption – bottom-left card like the reference */}
         <div className="absolute inset-0 z-10 flex items-end">
-          <div className="mx-auto w-full max-w-7xl px-4 pb-10 sm:px-6 sm:pb-12">
+          <div className="mx-auto w-full max-w-7xl px-4 pb-16 sm:px-6 sm:pb-20">
             <div className="max-w-2xl rounded-xl border border-white/10 bg-charcoal/45 p-5 backdrop-blur-sm sm:p-7">
               <p
                 key={`k-${current}`}

@@ -89,6 +89,20 @@ const subcategoryMap: Record<string, { name: string; slug: string; description: 
     { name: "Colored Marble", slug: "colored-marble", description: "Multi-colored marble tiles" },
     { name: "Veined Marble", slug: "veined-marble", description: "Veined marble tile patterns" },
   ],
+  "wall-tiles": [
+    { name: "Ceramic Wall Tiles", slug: "ceramic-wall-tiles", description: "Ceramic tiles for wall applications" },
+    { name: "Glazed Wall Tiles", slug: "glazed-wall-tiles", description: "Glazed finish wall tiles" },
+    { name: "Mosaic Wall Tiles", slug: "mosaic-wall-tiles", description: "Mosaic tiles for wall decoration" },
+    { name: "3D Wall Tiles", slug: "3d-wall-tiles", description: "Three-dimensional textured wall tiles" },
+    { name: "Large Format Wall Tiles", slug: "large-format-wall-tiles", description: "Large format tiles for wall cladding" },
+  ],
+  "floor-tiles": [
+    { name: "Vitrified Floor Tiles", slug: "vitrified-floor-tiles", description: "Durable vitrified tiles for flooring" },
+    { name: "Ceramic Floor Tiles", slug: "ceramic-floor-tiles", description: "Ceramic tiles for floor applications" },
+    { name: "Anti-Skid Floor Tiles", slug: "anti-skid-floor-tiles", description: "Anti-slip floor tiles for safety" },
+    { name: "Large Format Floor Tiles", slug: "large-format-floor-tiles", description: "Large format tiles for seamless flooring" },
+    { name: "Wood Finish Floor Tiles", slug: "wood-finish-floor-tiles", description: "Wood look floor tiles" },
+  ],
 };
 
 async function main() {

@@ -59,7 +59,7 @@ export default function SiteHeader({
   return (
     <header className="sticky top-0 z-50 w-full bg-charcoal text-white">
       {/* ── 1. Top Information Bar ─────────────────────────────── */}
-      <div className="hidden md:flex md:items-center md:justify-between md:px-6 md:py-1.5 border-b border-white/10 bg-onyx text-[10px] uppercase tracking-[0.14em] text-white/60 lg:px-8 lg:py-2 lg:text-[11px]">
+      <div className="hidden md:flex md:items-center md:justify-between md:px-6 md:py-1 border-b border-white/10 bg-onyx text-[9px] uppercase tracking-[0.14em] text-white/60 lg:px-8 lg:py-1.5 lg:text-[10px]">
         <div className="flex items-center gap-2 min-w-0">
           <MapPin className="h-3.5 w-3.5 shrink-0 text-gold flex-shrink-0" />
           <span className="truncate">{ADDRESS}</span>
@@ -77,18 +77,18 @@ export default function SiteHeader({
 
       {/* ── 2. Main Brand / Search / CTA Bar ────────────────────── */}
       <div className="relative z-50 border-b border-white/10 bg-charcoal/95 backdrop-blur">
-        <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-6 py-2.5 lg:px-8 lg:py-3">
+        <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-6 py-2 lg:px-8 lg:py-2.5">
           {/* Left: Logo + Mobile Menu Button */}
           <div className="flex items-center gap-3 lg:gap-4">
             <button
               type="button"
-              className="text-white/80 transition-colors hover:text-gold md:hidden"
+              className="flex h-11 w-11 shrink-0 items-center justify-center text-white/80 transition-colors hover:text-gold md:hidden"
               onClick={() => setMobileOpen((v) => !v)}
               aria-label={mobileOpen ? "Close menu" : "Open menu"}
             >
-              {mobileOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+              {mobileOpen ? <X className="h-7 w-7" /> : <Menu className="h-7 w-7" />}
             </button>
-            <LogoMark className="h-16 w-16 shrink-0 lg:h-20 lg:w-20" />
+            <LogoMark className="h-16 w-20 shrink-0 md:h-16 md:w-20 lg:h-[90px] lg:w-[120px]" />
           </div>
 
           {/* Center: Search Box */}
@@ -123,7 +123,7 @@ export default function SiteHeader({
       </div>
 
       {/* ── 3. Navigation Bar ───────────────────────────────────── */}
-      <div className="hidden md:flex md:items-center md:justify-center md:gap-1 md:px-6 md:py-1.5 border-b border-white/10 bg-charcoal text-[10px] font-medium uppercase tracking-[0.12em] lg:px-8 lg:py-2 lg:text-[11px] lg:gap-1.5">
+      <div className="hidden md:flex md:items-center md:justify-center md:gap-1 md:px-6 md:py-1 border-b border-white/10 bg-charcoal text-[10px] font-medium uppercase tracking-[0.12em] lg:px-8 lg:py-1.5 lg:text-[11px] lg:gap-1.5">
         {NAV_ITEMS.slice(0, 2).map((item) => (
           <Link
             key={item.href}
@@ -155,36 +155,38 @@ export default function SiteHeader({
               )}
             />
           </button>
-          {openCategories && (
-            <div className="absolute left-1/2 top-full -translate-x-1/2 pt-3">
-              <div className="w-[720px] border border-gold/20 bg-charcoal p-5 shadow-2xl">
-                <div className="grid grid-cols-3 gap-x-6 gap-y-4">
-                  {categories.map((cat) => (
-                    <div key={cat.id}>
-                      <Link
-                        href={`/categories/${cat.slug}`}
-                        className="font-serif text-sm font-semibold uppercase tracking-wide text-gold transition-colors hover:text-gold-light"
-                      >
-                        {cat.name}
-                      </Link>
-                      {cat.children.length > 0 && (
-                        <ul className="mt-1.5 space-y-1">
-                          {cat.children.map((child) => (
-                            <li key={child.id}>
-                              <Link
-                                href={`/categories/${child.slug}`}
-                                className="text-[11px] text-white/65 transition-colors hover:text-white"
-                              >
-                                {child.name}
-                              </Link>
-                            </li>
-                          ))}
-                        </ul>
-                      )}
-                    </div>
-                  ))}
+{openCategories && (
+            <div className="absolute left-1/2 top-full -translate-x-1/2 pt-3 z-[100]">
+              <div className="w-[1000px] max-w-[calc(100vw-40px)] overflow-hidden rounded-xl border border-white/10 bg-charcoal shadow-2xl">
+                <div className="max-h-[450px] overflow-x-hidden overflow-y-auto p-7 custom-scrollbar">
+                  <div className="grid grid-cols-5 gap-x-8 gap-y-8">
+                    {categories.map((cat) => (
+                      <div key={cat.id} className="min-w-0">
+                        <Link
+                          href={`/categories/${cat.slug}`}
+                          className="font-serif text-sm font-semibold uppercase tracking-wide text-gold transition-colors hover:text-gold-light block pb-2 border-b border-white/10 mb-3"
+                        >
+                          {cat.name}
+                        </Link>
+                        {cat.children.length > 0 && (
+                          <ul className="space-y-2">
+                            {cat.children.map((child) => (
+                              <li key={child.id}>
+                                <Link
+                                  href={`/categories/${child.slug}`}
+                                  className="block break-words text-xs leading-relaxed text-white/70 transition-colors hover:text-gold"
+                                >
+                                  {child.name}
+                                </Link>
+                              </li>
+                            ))}
+                          </ul>
+                        )}
+                      </div>
+                    ))}
+                  </div>
                 </div>
-                <div className="mt-4 border-t border-white/10 pt-3">
+                <div className="border-t border-white/10 px-6 py-4">
                   <Link
                     href="/products"
                     className="inline-flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-[0.16em] text-gold transition-colors hover:text-gold-light"
@@ -250,17 +252,22 @@ export default function SiteHeader({
                         >
                           {cat.name}
                         </Link>
-                        {cat.children.map((child) => (
-                          <Link
-                            key={child.id}
-                            href={`/categories/${child.slug}`}
-                            onClick={() => setMobileOpen(false)}
-                            className="block py-1.5 pl-4 text-[12px] text-white/50 transition-colors hover:text-gold"
-                          >
-                            <ChevronRight className="mr-1 inline h-3 w-3" />
-                            {child.name}
-                          </Link>
-                        ))}
+                        {cat.children.length > 0 && (
+                          <ul className="mt-1 space-y-1 pl-2 border-l border-white/10 ml-2">
+                            {cat.children.map((child) => (
+                              <li key={child.id}>
+                                <Link
+                                  href={`/categories/${child.slug}`}
+                                  onClick={() => setMobileOpen(false)}
+                                  className="block py-1.5 pl-2 text-[11px] text-white/50 transition-colors hover:text-gold"
+                                >
+                                  <ChevronRight className="mr-1 inline h-3 w-3" />
+                                  {child.name}
+                                </Link>
+                              </li>
+                            ))}
+                          </ul>
+                        )}
                       </li>
                     ))}
                   </ul>

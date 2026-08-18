@@ -286,6 +286,8 @@ export default async function HomePage() {
     if (c.slug === "tiles") continue;
     railTiles.push({ name: c.name, slug: c.slug, image: c.image ?? null });
   }
+  // Limit to 8 collections for Shop by Category
+  railTiles.splice(8);
   const promoHref = heroCategory ? `/categories/${heroCategory.slug}` : "/products";
   const promoImage =
     s["promoImage"] ||
