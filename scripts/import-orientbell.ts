@@ -279,6 +279,7 @@ function cleanImages(p: RawProduct): { url: string; alt: string }[] {
     p.smallImage,
     p.swatchImage,
     p.thumbnail,
+    ...(p.tilesImages ? p.tilesImages.split(",") : []),
   ].filter(
     (u): u is string =>
       !!u &&

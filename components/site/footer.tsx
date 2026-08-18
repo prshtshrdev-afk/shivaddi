@@ -171,7 +171,7 @@ export default async function Footer() {
               Tiles by Type
             </h3>
             <ul className="mt-5 space-y-2.5">
-              {categories.map((cat) => (
+              {categories.slice(0, 5).map((cat) => (
                 <li key={cat.id}>
                   <Link
                     href={`/categories/${cat.slug}`}
