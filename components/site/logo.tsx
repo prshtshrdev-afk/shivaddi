@@ -5,7 +5,7 @@ import Image from "next/image";
 export function LogoMark({ className }: { className?: string }) {
   return (
     <Image
-      src="/shivadii-logo.webp"
+      src="/shivadii-logo.png"
       alt="Shiv Aadi Logo"
       width={48}
       height={48}
