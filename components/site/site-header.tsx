@@ -86,30 +86,7 @@ export default function SiteHeader({
         </div>
       </div>
 
-      {/* ── Search bar ───────────────────────────── */}
-      <div className="border-b border-white/10 bg-charcoal/95 backdrop-blur">
-        <div className="mx-auto flex max-w-7xl items-center gap-4 px-4 py-3 sm:px-6">
-          <LogoMark className="h-14 w-14 shrink-0" />
-          <form
-            action="/search"
-            className="flex-1 max-w-2xl mx-auto"
-            role="search"
-          >
-            <label className="relative block w-full">
-              <Search className="pointer-events-none absolute left-5 top-1/2 h-5 w-5 -translate-y-1/2 text-white/40" />
-              <input
-                name="q"
-                type="search"
-                placeholder="Search tiles, marble, sanitaryware, granite…"
-                aria-label="Search products"
-                className="h-14 w-full rounded-[2px] border border-white/15 bg-onyx pl-14 pr-12 text-lg text-white placeholder:text-white/35 transition-colors duration-300 focus:border-gold focus:outline-none"
-              />
-            </label>
-          </form>
-        </div>
-      </div>
-
-      {/* ── Main bar ────────────────────────────── */}
+      {/* ── Main bar with logo, search, nav, actions ────────────────────────────── */}
       <div className="relative z-50 border-b border-white/10 bg-charcoal/95 backdrop-blur">
         <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-3 sm:px-6">
           <button
@@ -121,8 +98,29 @@ export default function SiteHeader({
             {mobileOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
           </button>
 
-          {/* Desktop nav */}
-          <nav className="hidden items-center gap-4 text-[11px] font-medium uppercase tracking-[0.12em] xl:gap-6 xl:text-[12px] xl:tracking-[0.16em] lg:flex">
+          {/* Logo */}
+          <LogoMark className="h-12 w-12 shrink-0" />
+
+          {/* Search - medium size on right of logo */}
+          <form
+            action="/search"
+            className="hidden md:block relative w-[280px]"
+            role="search"
+          >
+            <label className="relative block">
+              <Search className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-white/40" />
+              <input
+                name="q"
+                type="search"
+                placeholder="Search tiles, marble, sanitaryware…"
+                aria-label="Search products"
+                className="h-10 w-full rounded-[2px] border border-white/15 bg-onyx pl-12 pr-4 text-sm text-white placeholder:text-white/35 transition-colors duration-300 focus:border-gold focus:outline-none"
+              />
+            </label>
+          </form>
+
+          {/* Desktop nav - centered */}
+          <nav className="flex flex-1 justify-center items-center gap-4 text-[11px] font-medium uppercase tracking-[0.12em] xl:gap-6 xl:text-[12px] xl:tracking-[0.16em]">
             {NAV_ITEMS.slice(0, 2).map((item) => (
               <Link
                 key={item.href}
@@ -208,20 +206,14 @@ export default function SiteHeader({
             ))}
           </nav>
 
+          {/* Action buttons - horizontal on right */}
           <div className="flex items-center gap-3">
-            <Link
-              href="/#try-in-your-room"
-              className="hidden items-center gap-2 rounded-md border border-gold/60 px-4 py-2.5 text-[11px] font-bold uppercase tracking-[0.16em] text-gold transition-all duration-300 hover:bg-gold hover:text-charcoal 2xl:inline-flex"
-            >
-              <Camera className="h-4 w-4" />
-              Try in Your Room
-            </Link>
             {waLink && (
               <a
                 href={waLink}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="hidden items-center gap-2 rounded-md bg-gold px-5 py-2.5 text-[11px] font-bold uppercase tracking-[0.16em] text-charcoal transition-all duration-300 hover:bg-gold-light hover:shadow-gold sm:inline-flex"
+                className="hidden sm:inline-flex items-center gap-2 rounded-md bg-gold px-5 py-2.5 text-[11px] font-bold uppercase tracking-[0.16em] text-charcoal transition-all duration-300 hover:bg-gold-light hover:shadow-gold"
               >
                 <MessageCircle className="h-4 w-4" />
                 Get Quote
@@ -229,7 +221,7 @@ export default function SiteHeader({
             )}
             <a
               href={`tel:${contact.phoneDisplay.replace(/[^0-9+]/g, "")}`}
-              className="hidden items-center gap-2 rounded-md border border-white/25 px-5 py-2.5 text-[11px] font-bold uppercase tracking-[0.16em] text-white transition-all duration-300 hover:border-gold hover:text-gold xl:inline-flex"
+              className="hidden sm:inline-flex items-center gap-2 rounded-md border border-white/25 px-5 py-2.5 text-[11px] font-bold uppercase tracking-[0.16em] text-white transition-all duration-300 hover:border-gold hover:text-gold"
             >
               <Phone className="h-4 w-4" />
               Call Now
