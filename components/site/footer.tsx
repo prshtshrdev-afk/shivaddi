@@ -211,15 +211,6 @@ export default async function Footer() {
                   </Link>
                 </li>
               ))}
-              <li>
-                <Link
-                  href="/categories/tiles"
-                  className="group inline-flex items-center gap-1 text-sm font-semibold text-gold transition-colors hover:text-gold-light"
-                >
-                  Tiles Collection
-                  <ArrowUpRight className="h-3 w-3 opacity-0 transition-opacity group-hover:opacity-100" />
-                </Link>
-              </li>
             </ul>
           </div>
 
