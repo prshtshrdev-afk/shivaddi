@@ -7,8 +7,8 @@ export function LogoMark({ className }: { className?: string }) {
     <Image
       src="/shivadii-logo.png"
       alt="Shiv Aadi Logo"
-      width={48}
-      height={48}
+      width={72}
+      height={72}
       className={cn("transition-transform duration-300 group-hover:scale-105", className)}
       aria-hidden
     />
