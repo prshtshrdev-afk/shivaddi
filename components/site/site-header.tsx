@@ -43,7 +43,7 @@ export default function SiteHeader({
   categories,
   contact,
 }: {
-  categories: (Category & { children: Category[] })[];
+  categories: (Category & { children: Category[]; _count?: { products: number } })[];
   contact: ContactInfo;
 }) {
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -88,7 +88,7 @@ export default function SiteHeader({
             >
               {mobileOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
             </button>
-            <LogoMark className="h-14 w-14 shrink-0 lg:h-16 lg:w-16" />
+            <LogoMark className="h-16 w-16 shrink-0 lg:h-20 lg:w-20" />
           </div>
 
           {/* Center: Search Box */}

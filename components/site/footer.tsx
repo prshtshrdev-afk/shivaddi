@@ -94,7 +94,7 @@ export default async function Footer() {
         <div className="grid grid-cols-1 gap-12 md:grid-cols-3 lg:grid-cols-12">
 {/* Brand */}
           <div className="lg:col-span-3">
-            <LogoMark className="h-16 w-16" />
+            <LogoMark width={160} height={160} className="block mx-auto lg:mx-0" />
             <p className="mt-5 text-sm leading-relaxed text-white/60">
               Premium tiles, marble, granite and sanitaryware for homes and
               businesses across India. A decade of trusted supply to builders,
