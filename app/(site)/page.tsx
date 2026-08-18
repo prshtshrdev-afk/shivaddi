@@ -228,7 +228,10 @@ export default async function HomePage() {
   const largeFormat = slabs.filter((p) =>
     /1200|1600|2400|slab/i.test(p.size ?? ""),
   );
-  const slabRows = largeFormat.length >= 3 ? largeFormat : slabs;
+  
+  // Use products with images as fallback for large slabs section
+  const productsWithImages = slabs.filter((p) => productThumb(p));
+  const slabRows = largeFormat.length >= 3 ? largeFormat : productsWithImages.length >= 3 ? productsWithImages : slabs;
 
   const slabProducts: SlabProduct[] = slabRows.map((p) => ({
     id: p.id,
