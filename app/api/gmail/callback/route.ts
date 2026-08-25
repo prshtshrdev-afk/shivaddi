@@ -54,6 +54,9 @@ export async function GET(request: NextRequest) {
 
   try {
     // Exchange authorization code for tokens
+    console.log("[gmail-callback] Exchanging code for tokens...");
+    console.log("[gmail-callback] redirect_uri:", redirectUri);
+
     const tokenResponse = await fetch("https://oauth2.googleapis.com/token", {
       method: "POST",
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
@@ -68,11 +71,23 @@ export async function GET(request: NextRequest) {
 
     const tokens = await tokenResponse.json() as Record<string, string>;
 
-    if (tokens.error || !tokens.refresh_token) {
+    console.log("[gmail-callback] Token response status:", tokenResponse.status);
+    console.log("[gmail-callback] Token response:", JSON.stringify(tokens, null, 2));
+
+    if (!tokenResponse.ok || tokens.error) {
       return NextResponse.json({
         error: "Token exchange failed",
         details: tokens.error_description || tokens.error,
+        status: tokenResponse.status,
       }, { status: 500 });
+    }
+
+    if (!tokens.refresh_token) {
+      return NextResponse.json({
+        error: "No refresh token returned. Re-consent might be needed.",
+        hint: "Visit /api/auth/login first to trigger fresh consent with prompt=consent",
+        scopes_granted: tokens.scope,
+      }, { status: 400 });
     }
 
     // Return the refresh token to display to user
