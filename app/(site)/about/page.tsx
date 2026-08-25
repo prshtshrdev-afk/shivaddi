@@ -46,20 +46,29 @@ const PILLARS = [
 ];
 
 export default async function AboutPage() {
-  const stats = await prisma.pageContent.findMany({
-    where: { page: "home", section: "stats" },
-    select: { content: true },
-    orderBy: { key: "asc" },
-  });
+  const [stats, aboutImages] = await Promise.all([
+    prisma.pageContent.findMany({
+      where: { page: "home", section: "stats" },
+      select: { content: true },
+      orderBy: { key: "asc" },
+    }),
+    prisma.product.findMany({
+      where: { published: true },
+      orderBy: { createdAt: "desc" },
+      take: 2,
+      include: { images: { orderBy: { sortOrder: "asc" }, take: 1 } },
+    }),
+  ]);
+  const getImg = (idx: number) => aboutImages[idx]?.images[0]?.url ?? "";
 
   return (
     <div>
       {/* Hero */}
       <section className="section-dark relative overflow-hidden py-24 sm:py-32">
         <div className="absolute inset-0">
-          <Image
-            src="https://images.unsplash.com/photo-1600585153490-76fb20a32601?q=80&w=1920&auto=format&fit=crop"
-            alt="Shiv Aadi showroom"
+            <Image
+              src={getImg(0) || "/shivadii-logo.jpg"}
+              alt="Shiv Aadi showroom"
             fill
             priority
             sizes="100vw"
@@ -87,7 +96,7 @@ export default async function AboutPage() {
           <Reveal className="relative order-2 lg:order-1">
             <div className="relative aspect-[4/5] overflow-hidden border border-charcoal/10">
               <Image
-                src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?q=80&w=1200&auto=format&fit=crop"
+                src={getImg(1) || "/shivadii-logo.jpg"}
                 alt="Premium interior finished with Shiv Aadi surfaces"
                 fill
                 sizes="(max-width:1024px) 100vw, 50vw"

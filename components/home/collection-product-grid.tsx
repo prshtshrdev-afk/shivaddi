@@ -3,7 +3,7 @@ import Reveal from "@/components/site/reveal";
 import SectionHeading from "./section-heading";
 import CollectionProductCard from "./collection-product-card";
 
-function getCategoryImage(category: { name: string; image: string | null }): string {
+function getCategoryImage(category: { name: string; image: string | null }, productFallbacks: string[]): string {
   if (category.image) return category.image;
   const FALLBACK_IMAGES: [string, string][] = [
     ["marble", "photo-1618221195710-dd6b41faaea6"],
@@ -19,8 +19,9 @@ function getCategoryImage(category: { name: string; image: string | null }): str
   ];
   const lower = category.name.toLowerCase();
   const match = FALLBACK_IMAGES.find(([key]) => lower.includes(key));
-  const id = match?.[1] ?? "photo-1600585154340-be6161a56a0c";
-  return `https://images.unsplash.com/${id}?q=80&w=600&auto=format&fit=crop`;
+  if (match) return `https://images.unsplash.com/${match[1]}?q=80&w=600&auto=format&fit=crop`;
+  if (productFallbacks.length) return productFallbacks[0];
+  return "";
 }
 
 export default async function CollectionProductGrid() {
@@ -39,6 +40,8 @@ export default async function CollectionProductGrid() {
     },
   });
 
+  const productFallbacks = categories.flatMap((cat) => cat.products[0]?.images[0]?.url ? [cat.products[0].images[0].url] : []);
+
   return (
     <section className="section-beige py-20 sm:py-28">
       <div className="mx-auto max-w-7xl px-4 sm:px-6">
@@ -52,14 +55,14 @@ export default async function CollectionProductGrid() {
           {categories.map((cat, i) => {
             const featuredProduct = cat.products[0];
             const featuredImage = featuredProduct?.images[0]?.url 
-              ?? getCategoryImage(cat);
+              ?? getCategoryImage(cat, productFallbacks);
 
             return (
               <Reveal key={cat.id} delay={i * 60}>
                 <CollectionProductCard
                   name={cat.name}
                   slug={cat.slug}
-                  image={getCategoryImage(cat)}
+                  image={getCategoryImage(cat, productFallbacks)}
                   productCount={cat._count.products}
                   featuredProduct={featuredProduct ? {
                     name: featuredProduct.name,

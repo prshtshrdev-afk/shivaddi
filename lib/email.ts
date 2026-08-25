@@ -118,6 +118,9 @@ export type LeadEmailData = {
 
 export async function sendB2BInquiryEmail(data: LeadEmailData): Promise<void> {
   const to = process.env.B2B_INQUIRY_EMAIL || senderAddress();
+  console.log("[mailer] sendB2BInquiryEmail called, to:", to);
+  console.log("[mailer] isEmailConfigured:", isEmailConfigured());
+  console.log("[mailer] hasGmailOAuth:", hasGmailOAuth());
   if (!isEmailConfigured() || !to) {
     console.warn("[mailer] SMTP not configured – email notification skipped.");
     return;
@@ -142,7 +145,7 @@ export async function sendB2BInquiryEmail(data: LeadEmailData): Promise<void> {
       </tr>
     </table>`;
 
-  await createTransporter().sendMail({
+  const result = await createTransporter().sendMail({
     from: `"Shiv Aadi Website" <${senderAddress()}>`,
     to,
     replyTo: data.email,
@@ -165,6 +168,7 @@ export async function sendB2BInquiryEmail(data: LeadEmailData): Promise<void> {
       `Message: ${data.message || "—"}`,
     ].join("\n"),
   });
+  console.log("[mailer] B2B email sent successfully, messageId:", result.messageId);
 }
 
 export type ContactEmailData = {

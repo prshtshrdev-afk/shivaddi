@@ -87,7 +87,10 @@ export default function SiteHeader({
             >
               {mobileOpen ? <X className="h-7 w-7" /> : <Menu className="h-7 w-7" />}
             </button>
-            <LogoMark className="h-16 w-20 shrink-0 md:h-16 md:w-20 lg:h-[90px] lg:w-[120px]" />
+            <div className="flex-1 flex justify-center md:justify-start md:flex-none">
+              <LogoMark className="h-16 w-20 shrink-0 md:h-16 md:w-20 lg:h-[90px] lg:w-[120px]" />
+            </div>
+            <div className="w-11 md:hidden" />
           </div>
 
           {/* Center: Search Box */}

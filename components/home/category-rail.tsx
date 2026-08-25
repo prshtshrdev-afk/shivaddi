@@ -25,18 +25,24 @@ const FALLBACK_IMAGES: [string, string][] = [
   ["room", "photo-1600585153490-76fb20a32601"],
 ];
 
-export function categoryImage(category: { name: string; image: string | null }): string {
+export function categoryImage(
+  category: { name: string; image: string | null },
+  productFallbacks: string[] = [],
+): string {
   if (category.image) return category.image;
   const lower = category.name.toLowerCase();
   const match = FALLBACK_IMAGES.find(([key]) => lower.includes(key));
-  const id = match?.[1] ?? "photo-1600585154340-be6161a56a0c";
-  return `https://images.unsplash.com/${id}?q=80&w=600&auto=format&fit=crop`;
+  if (match) return `https://images.unsplash.com/${match[1]}?q=80&w=600&auto=format&fit=crop`;
+  if (productFallbacks.length) return productFallbacks[0];
+  return "";
 }
 
 export default function CategoryRail({
   tiles,
+  productFallbacks = [],
 }: {
   tiles: CategoryTile[];
+  productFallbacks?: string[];
 }) {
   return (
     <section className="border-b border-charcoal/10 bg-white py-14 sm:py-16">
@@ -66,7 +72,7 @@ export default function CategoryRail({
             >
               <span className="relative block aspect-square overflow-hidden rounded-xl border border-charcoal/10 bg-beige">
                 <Image
-                  src={categoryImage(tile)}
+                  src={categoryImage(tile, productFallbacks)}
                   alt={tile.name}
                   fill
                   sizes="(max-width:640px) 50vw, 25vw"

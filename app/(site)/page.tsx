@@ -289,18 +289,18 @@ export default async function HomePage() {
   // Limit to 8 collections for Shop by Category
   railTiles.splice(8);
   const promoHref = heroCategory ? `/categories/${heroCategory.slug}` : "/products";
+  const fallbackProductImage = exploreRows.flatMap((p) => {
+    const thumb = productThumb(p);
+    return thumb ? [thumb] : [];
+  })[0] ?? "";
   const promoImage =
     s["promoImage"] ||
-    exploreRows.flatMap((p) => {
-      const thumb = productThumb(p);
-      return thumb ? [thumb] : [];
-    })[0] ||
-    "https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?q=80&w=1920&auto=format&fit=crop";
+    fallbackProductImage;
 
   return (
     <>
       <HeroSlider slides={slides} />
-      <CategoryRail tiles={railTiles} />
+      <CategoryRail tiles={railTiles} productFallbacks={exploreRows.flatMap((p) => { const t = productThumb(p); return t ? [t] : []; }).slice(0, 8)} />
       <LargeSlabs products={slabProducts} />
       <StatStrip
         stats={stats}
@@ -321,10 +321,10 @@ export default async function HomePage() {
         ctaLabel="Explore Range"
       />
       <FeaturedProducts products={featuredProducts} />
-      <ExploreMatters products={exploreProducts} />
-      <TileVisualizer products={visualizerProducts} whatsappLink={waLink} />
+      <ExploreMatters products={exploreProducts} fallbackImage={fallbackProductImage} />
+      <TileVisualizer products={visualizerProducts} whatsappLink={waLink} roomImages={gallery.slice(0, 5).map(g => g.url)} />
       <BrandStatement
-        image={s["aboutImage"] || "https://images.unsplash.com/photo-1600585153490-76fb20a32601?q=80&w=1200&auto=format&fit=crop"}
+        image={s["aboutImage"] || fallbackProductImage}
         heading={aboutContent["heading"] || s["aboutHeading"] || "The Shiv Aadi Story"}
         badge={aboutContent["kicker"] || "Rooted in Mithila"}
         description={

@@ -132,7 +132,7 @@ export default function LeadForm({ products }: { products: ProductOption[] }) {
           <label htmlFor="lead-phone" className={labelCls}>
             Phone / WhatsApp *
           </label>
-          <input id="lead-phone" className={inputCls} placeholder="+91 …" {...register("phone")} />
+          <input id="lead-phone" type="tel" inputMode="tel" className={inputCls} placeholder="+91 …" {...register("phone")} />
           {errors.phone && (
             <p className="mt-1.5 text-[12px] text-red-600">{errors.phone.message}</p>
           )}
@@ -185,7 +185,7 @@ export default function LeadForm({ products }: { products: ProductOption[] }) {
           <label htmlFor="lead-qty" className={labelCls}>
             Approx. Quantity
           </label>
-          <input id="lead-qty" className={inputCls} placeholder="e.g. 5,000 sq.ft" {...register("quantity")} />
+          <input id="lead-qty" inputMode="numeric" className={inputCls} placeholder="e.g. 5,000 sq.ft" {...register("quantity")} />
         </div>
         <div className="sm:col-span-2">
           <label htmlFor="lead-message" className={labelCls}>

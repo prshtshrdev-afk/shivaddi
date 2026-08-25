@@ -29,8 +29,7 @@ const GROUPS: { key: FilterKey; label: string }[] = [
   { key: "size", label: "Sizes" },
 ];
 
-const FALLBACK_IMAGE =
-  "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=600&auto=format&fit=crop";
+const FALLBACK_IMAGE = "";
 
 function valueOptions(products: ExploreProduct[], key: FilterKey) {
   const counts = new Map<string, number>();
@@ -47,8 +46,10 @@ function valueOptions(products: ExploreProduct[], key: FilterKey) {
 
 export default function ExploreMatters({
   products,
+  fallbackImage = "",
 }: {
   products: ExploreProduct[];
+  fallbackImage?: string;
 }) {
   const [selected, setSelected] = useState<Partial<Record<FilterKey, string>>>({});
 
@@ -177,7 +178,7 @@ export default function ExploreMatters({
                       ) : (
                         <div className="flex h-full items-center justify-center bg-beige">
                           <Image
-                            src={FALLBACK_IMAGE}
+                            src={fallbackImage || FALLBACK_IMAGE}
                             alt={p.name}
                             fill
                             className="object-cover"

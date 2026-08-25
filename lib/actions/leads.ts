@@ -83,6 +83,8 @@ export async function submitLead(
     });
 
     try {
+      console.log("[lead] Sending B2B inquiry email to:", process.env.B2B_INQUIRY_EMAIL);
+      console.log("[lead] Gmail OAuth configured:", Boolean(process.env.GMAIL_CLIENT_ID && process.env.GMAIL_CLIENT_SECRET && process.env.GMAIL_REFRESH_TOKEN));
       await sendB2BInquiryEmail({
         name: lead.name,
         company: lead.company ?? undefined,
@@ -97,8 +99,8 @@ export async function submitLead(
         expectedDate: lead.expectedDate ?? undefined,
         message: lead.message ?? undefined,
       });
+      console.log("[lead] B2B inquiry email sent successfully");
     } catch (emailError) {
-      // Email failure must never break the customer experience.
       console.error("[lead] Email notification failed:", emailError);
     }
 

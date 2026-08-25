@@ -2,6 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { ArrowUpRight } from "lucide-react";
 import type { Category } from "@/app/generated/prisma/client";
+import { prisma } from "@/lib/prisma";
 import Reveal from "@/components/site/reveal";
 import SectionHeading from "./section-heading";
 
@@ -30,19 +31,28 @@ const FALLBACK_IMAGES: [string, string][] = [
   ["living", "photo-1600585153490-76fb20a32601"],
 ];
 
-function categoryImage(category: { name: string; image: string | null }): string {
+function categoryImage(category: { name: string; image: string | null }, productFallbacks: string[]): string {
   if (category.image) return category.image;
   const lower = category.name.toLowerCase();
   const match = FALLBACK_IMAGES.find(([key]) => lower.includes(key));
-  const id = match?.[1] ?? "photo-1600585154340-be6161a56a0c";
-  return `https://images.unsplash.com/${id}?q=80&w=600&auto=format&fit=crop`;
+  if (match) return `https://images.unsplash.com/${match[1]}?q=80&w=600&auto=format&fit=crop`;
+  if (productFallbacks.length) return productFallbacks[0];
+  return "";
 }
 
-export default function CategoryGrid({
+export default async function CategoryGrid({
   categories,
 }: {
   categories: (Category & { children?: Category[] })[];
 }) {
+  const fallbackProducts = await prisma.product.findMany({
+    where: { published: true },
+    orderBy: { createdAt: "desc" },
+    take: 8,
+    include: { images: { orderBy: { sortOrder: "asc" }, take: 1 } },
+  });
+  const productFallbacks = fallbackProducts.flatMap((p) => p.images[0]?.url ? [p.images[0].url] : []);
+
   return (
     <section className="section-beige py-20 sm:py-28">
       <div className="mx-auto max-w-7xl px-4 sm:px-6">
@@ -60,7 +70,7 @@ export default function CategoryGrid({
                 className="group relative block aspect-[4/5] overflow-hidden border border-charcoal/10 bg-charcoal"
               >
                 <Image
-                  src={categoryImage(cat)}
+                  src={categoryImage(cat, productFallbacks)}
                   alt={cat.name}
                   fill
                   sizes="(max-width:640px) 50vw, (max-width:1024px) 33vw, 25vw"

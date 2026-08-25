@@ -26,28 +26,23 @@ export type VisualizerProduct = {
 const ROOMS = [
   {
     name: "Living Room",
-    image:
-      "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=1400&auto=format&fit=crop",
+    image: "",
   },
   {
     name: "Bathroom",
-    image:
-      "https://images.unsplash.com/photo-1620626011761-996317b8d101?q=80&w=1400&auto=format&fit=crop",
+    image: "",
   },
   {
     name: "Kitchen",
-    image:
-      "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?q=80&w=1400&auto=format&fit=crop",
+    image: "",
   },
   {
     name: "Bedroom",
-    image:
-      "https://images.unsplash.com/photo-1616594039964-ae9021a400a0?q=80&w=1400&auto=format&fit=crop",
+    image: "",
   },
   {
     name: "Exterior",
-    image:
-      "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?q=80&w=1400&auto=format&fit=crop",
+    image: "",
   },
 ];
 
@@ -61,9 +56,11 @@ const STEPS = [
 export default function TileVisualizer({
   products,
   whatsappLink = "",
+  roomImages = [],
 }: {
   products: VisualizerProduct[];
   whatsappLink?: string;
+  roomImages?: string[];
 }) {
   const [room, setRoom] = useState(ROOMS[0]);
   const [uploadedRoom, setUploadedRoom] = useState<string | null>(null);
@@ -73,7 +70,7 @@ export default function TileVisualizer({
   const [step, setStep] = useState(0);
   const fileInput = useRef<HTMLInputElement>(null);
 
-  const roomImage = uploadedRoom ?? room.image;
+  const roomImage = uploadedRoom ?? (room.image || roomImages[ROOMS.indexOf(room)] || "");
 
   const onUpload = (file: File | undefined) => {
     if (!file) return;

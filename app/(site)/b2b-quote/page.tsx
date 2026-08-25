@@ -14,12 +14,21 @@ export const metadata: Metadata = {
 };
 
 export default async function B2BQuotePage() {
-  const s = await getContactInfo();
-  const products = await prisma.product.findMany({
-    where: { published: true },
-    orderBy: { name: "asc" },
-    select: { id: true, name: true, slug: true },
-  });
+  const [s, products, fallbackImages] = await Promise.all([
+    getContactInfo(),
+    prisma.product.findMany({
+      where: { published: true },
+      orderBy: { name: "asc" },
+      select: { id: true, name: true, slug: true },
+    }),
+    prisma.product.findMany({
+      where: { published: true },
+      orderBy: { createdAt: "desc" },
+      take: 1,
+      include: { images: { orderBy: { sortOrder: "asc" }, take: 1 } },
+    }),
+  ]);
+  const heroBg = fallbackImages[0]?.images[0]?.url ?? "";
 
   return (
     <div>
@@ -27,7 +36,7 @@ export default async function B2BQuotePage() {
       <section className="section-dark relative overflow-hidden py-20 sm:py-24">
         <div className="absolute inset-0">
           <Image
-            src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=1920&auto=format&fit=crop"
+            src={heroBg || "/shivadii-logo.jpg"}
             alt="Premium marble surfaces"
             fill
             priority

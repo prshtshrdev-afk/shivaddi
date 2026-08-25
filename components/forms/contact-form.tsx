@@ -89,7 +89,7 @@ export default function ContactForm() {
         </div>
         <div>
           <label htmlFor="c-phone" className={labelCls}>Phone *</label>
-          <input id="c-phone" className={inputCls} placeholder="+91 …" {...register("phone")} />
+          <input id="c-phone" type="tel" inputMode="tel" className={inputCls} placeholder="+91 …" {...register("phone")} />
           {errors.phone && (
             <p className="mt-1.5 text-[12px] text-red-600">{errors.phone.message}</p>
           )}
