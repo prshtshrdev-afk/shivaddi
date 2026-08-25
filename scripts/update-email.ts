@@ -2,7 +2,9 @@
  * SHIV AADI — one-off: update site contact emails.
  * Run via: npm run email:update
  */
-import "dotenv/config";
+import dotenv from "dotenv";
+dotenv.config({ path: ".env.local" });
+dotenv.config(); // fall back to .env
 import { PrismaClient } from "../app/generated/prisma/client";
 import { PrismaPg } from "@prisma/adapter-pg";
 

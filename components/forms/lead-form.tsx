@@ -30,6 +30,7 @@ export default function LeadForm({ products }: { products: ProductOption[] }) {
     register,
     handleSubmit,
     setError,
+    setValue,
     formState: { errors, isSubmitting },
   } = useForm<LeadFormInput, unknown, LeadFormOutput>({
     resolver: zodResolver(leadSchema),
@@ -51,6 +52,10 @@ export default function LeadForm({ products }: { products: ProductOption[] }) {
       website: "",
     },
   });
+
+  // Keep productName in sync so emails show the selected product's name.
+  const onProductChange = (value: string) =>
+    setValue("productName", products.find((p) => p.id === value)?.name ?? "");
 
   const onSubmit = async (values: LeadFormOutput) => {
     const res = await submitLead(values);
@@ -160,7 +165,14 @@ export default function LeadForm({ products }: { products: ProductOption[] }) {
           <label htmlFor="lead-product" className={labelCls}>
             Product of Interest
           </label>
-          <select id="lead-product" defaultValue={searchParams.get("product") ?? ""} className={inputCls} {...register("productId")}>
+          <select
+            id="lead-product"
+            defaultValue={searchParams.get("product") ?? ""}
+            className={inputCls}
+            {...register("productId", {
+              onChange: (e) => onProductChange(e.target.value),
+            })}
+          >
             <option value="">Select a product (optional)</option>
             {products.map((p) => (
               <option key={p.id} value={p.id}>

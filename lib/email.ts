@@ -2,7 +2,22 @@ import "server-only";
 
 import nodemailer from "nodemailer";
 
+export function hasGmailOAuth() {
+  return Boolean(
+    process.env.GMAIL_CLIENT_ID &&
+      process.env.GMAIL_CLIENT_SECRET &&
+      process.env.GMAIL_REFRESH_TOKEN,
+  );
+}
+
+export function senderAddress(): string | undefined {
+  return process.env.GMAIL_USER || process.env.SMTP_USER;
+}
+
 export function isEmailConfigured() {
+  if (hasGmailOAuth()) {
+    return Boolean(senderAddress() && (process.env.B2B_INQUIRY_EMAIL || senderAddress()));
+  }
   return Boolean(
     process.env.SMTP_HOST &&
       process.env.SMTP_PORT &&
@@ -13,6 +28,21 @@ export function isEmailConfigured() {
 }
 
 function createTransporter() {
+  if (hasGmailOAuth()) {
+    // Gmail via OAuth2 (nodemailer auto-refreshes access tokens)
+    return nodemailer.createTransport({
+      host: "smtp.gmail.com",
+      port: 465,
+      secure: true,
+      auth: {
+        type: "OAuth2",
+        user: senderAddress(),
+        clientId: process.env.GMAIL_CLIENT_ID,
+        clientSecret: process.env.GMAIL_CLIENT_SECRET,
+        refreshToken: process.env.GMAIL_REFRESH_TOKEN,
+      },
+    });
+  }
   return nodemailer.createTransport({
     host: process.env.SMTP_HOST,
     port: Number(process.env.SMTP_PORT || 587),
@@ -87,7 +117,7 @@ export type LeadEmailData = {
 };
 
 export async function sendB2BInquiryEmail(data: LeadEmailData): Promise<void> {
-  const to = process.env.B2B_INQUIRY_EMAIL || process.env.SMTP_USER;
+  const to = process.env.B2B_INQUIRY_EMAIL || senderAddress();
   if (!isEmailConfigured() || !to) {
     console.warn("[mailer] SMTP not configured – email notification skipped.");
     return;
@@ -113,7 +143,7 @@ export async function sendB2BInquiryEmail(data: LeadEmailData): Promise<void> {
     </table>`;
 
   await createTransporter().sendMail({
-    from: `"Shiv Aadi Website" <${process.env.SMTP_USER}>`,
+    from: `"Shiv Aadi Website" <${senderAddress()}>`,
     to,
     replyTo: data.email,
     subject: "New B2B Inquiry – Shiv Aadi",
@@ -146,7 +176,7 @@ export type ContactEmailData = {
 };
 
 export async function sendContactEmail(data: ContactEmailData): Promise<void> {
-  const to = process.env.B2B_INQUIRY_EMAIL || process.env.SMTP_USER;
+  const to = process.env.B2B_INQUIRY_EMAIL || senderAddress();
   if (!isEmailConfigured() || !to) {
     console.warn("[mailer] SMTP not configured – email notification skipped.");
     return;
@@ -165,7 +195,7 @@ export async function sendContactEmail(data: ContactEmailData): Promise<void> {
     </table>`;
 
   await createTransporter().sendMail({
-    from: `"Shiv Aadi Website" <${process.env.SMTP_USER}>`,
+    from: `"Shiv Aadi Website" <${senderAddress()}>`,
     to,
     replyTo: data.email,
     subject: `New Contact Message – ${data.subject || "General Enquiry"}`,

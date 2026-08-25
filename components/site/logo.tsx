@@ -31,11 +31,9 @@ export function LogoMarkResponsive({ className }: { className?: string }) {
 }
 
 export default function Logo({
-  dark = false,
   className,
   responsive = false,
 }: {
-  dark?: boolean;
   className?: string;
   responsive?: boolean;
 }) {

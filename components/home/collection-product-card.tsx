@@ -3,7 +3,6 @@
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
-import { cn } from "@/lib/utils";
 
 export type CollectionProductCardProps = {
   name: string;
