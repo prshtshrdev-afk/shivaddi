@@ -1,28 +1,31 @@
 /**
  * SHIV AADI — one-time Gmail OAuth2 authorization.
- * Opens Google consent, captures code on localhost, prints GMAIL_REFRESH_TOKEN.
- * Run via: npm run gmail:auth
+ *
+ * Option 1 (Production - Recommended):
+ *   Visit: https://shivaadimithilatileshouse.com/api/gmail/callback?action=auth
+ *   After granting permission, you'll see the refresh token on screen.
+ *
+ * Option 2 (Localhost):
+ *   Run: npm run gmail:auth
+ *   Opens browser, captures code on localhost:3333.
  *
  * Requires in .env.local:
- *   GMAIL_CLIENT_ID / GMAIL_CLIENT_SECRET (from Google Cloud Console OAuth client)
- * And the OAuth client must have redirect URI: http://localhost:3333/oauth2callback
+ *   GMAIL_CLIENT_ID / GMAIL_CLIENT_SECRET
  */
 import dotenv from "dotenv";
 dotenv.config({ path: ".env.local" });
-dotenv.config(); // fall back to .env
+dotenv.config();
 import http from "http";
 import { exec } from "child_process";
 
 const REDIRECT_URI = "http://localhost:3333/oauth2callback";
-const SCOPE = "https://mail.google.com/"; // required for SMTP XOAUTH2
+const SCOPE = "https://mail.google.com/";
 
 async function main() {
   const clientId = process.env.GMAIL_CLIENT_ID;
   const clientSecret = process.env.GMAIL_CLIENT_SECRET;
   if (!clientId || !clientSecret) {
-    console.error(
-      "[gmail:auth] Missing GMAIL_CLIENT_ID / GMAIL_CLIENT_SECRET in .env.local",
-    );
+    console.error("[gmail:auth] Missing GMAIL_CLIENT_ID / GMAIL_CLIENT_SECRET in .env.local");
     process.exit(1);
   }
 
