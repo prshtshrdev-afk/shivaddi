@@ -5,7 +5,7 @@ import Image from "next/image";
 export function LogoMark({ className, width = 160, height = 160 }: { className?: string; width?: number; height?: number }) {
   return (
     <Image
-      src="/shivadii-logo.png"
+      src="/shivadii-logo.jpg"
       alt="Shiv Aadi Logo"
       width={width}
       height={height}
@@ -19,7 +19,7 @@ export function LogoMarkResponsive({ className }: { className?: string }) {
   return (
     <div className={cn("w-[70px] h-[70px] lg:w-[160px] lg:h-[160px]", className)}>
       <Image
-        src="/shivadii-logo.png"
+        src="/shivadii-logo.jpg"
         alt="Shiv Aadi Logo"
         fill
         sizes="(max-width: 1023px) 70px, 160px"

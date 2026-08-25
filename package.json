@@ -10,10 +10,13 @@
     "typecheck": "tsc --noEmit",
     "db:deploy": "prisma migrate deploy",
     "db:seed": "tsx prisma/seed.ts",
-    "db:import": "tsx scripts/import-orientbell.ts"
+    "db:import": "tsx scripts/import-orientbell.ts",
+    "smtp:test": "tsx scripts/test-smtp.ts",
+    "email:update": "tsx scripts/update-email.ts"
   },
   "dependencies": {
     "@auth/prisma-adapter": "^2.11.3",
+    "@hookform/resolvers": "^5.9.1",
     "@prisma/adapter-pg": "^7.9.1",
     "@prisma/client": "^7.9.1",
     "bcryptjs": "^3.0.3",
@@ -27,6 +30,7 @@
     "prisma": "^7.9.1",
     "react": "19.2.8",
     "react-dom": "19.2.8",
+    "react-hook-form": "^7.86.0",
     "sonner": "^2.0.8",
     "tailwind-merge": "^3.6.0",
     "zod": "^4.4.3"
@@ -41,6 +45,7 @@
     "dotenv": "^17.4.2",
     "eslint": "^9",
     "eslint-config-next": "16.3.0",
+    "sharp": "^0.35.3",
     "tailwindcss": "^4",
     "tsx": "^4.23.11",
     "typescript": "^5"
