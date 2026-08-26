@@ -21,10 +21,12 @@ export default function ProductGallery({ images, name }: {
   const [active, setActive] = useState(0);
   const current = ordered[active];
 
+  const hasMultiple = ordered.length > 1;
+
   return (
-    <div className="grid grid-cols-1 gap-4 lg:grid-cols-[88px_1fr]">
+    <div className={cn("grid grid-cols-1 gap-4", hasMultiple && "lg:grid-cols-[88px_1fr]")}>
       {/* Thumbnails */}
-      {ordered.length > 1 && (
+      {hasMultiple && (
         <div className="order-2 flex gap-3 overflow-x-auto lg:order-1 lg:flex-col lg:overflow-visible">
           {ordered.map((img, i) => (
             <button
@@ -52,7 +54,7 @@ export default function ProductGallery({ images, name }: {
       )}
 
       {/* Active image */}
-      <div className="order-1 lg:order-2">
+      <div className={cn("order-1", hasMultiple && "lg:order-2")}>
         <div className="relative aspect-[4/5] w-full overflow-hidden border border-charcoal/10 bg-beige">
           <Image
             key={current.url + active}
