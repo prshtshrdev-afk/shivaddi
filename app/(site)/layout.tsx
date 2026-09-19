@@ -1,4 +1,8 @@
-
+import type { ReactNode } from "react";
+import Header from "@/components/site/header";
+import Footer from "@/components/site/footer";
+import WhatsAppFloat from "@/components/site/whatsapp-float";
+import { getContactInfo } from "@/lib/site";
 export const dynamic = "force-dynamic";
 
 export default async function SiteLayout({ children }: { children: ReactNode }) {
